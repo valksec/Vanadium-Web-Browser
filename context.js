@@ -1,4 +1,6 @@
-const explicitWebsites = [
+const blockedAdDomains = [
+  "ad.doubleclick.net",
+  "adservice.google.com",
   "seegore.com",
   "goresee.com",
   "goregrish.com",
@@ -23,16 +25,23 @@ const explicitWebsites = [
   "redporn.porn",
 ];
 
-const currentUrl = window.location.href;
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "getBlockedWebsites") {
+    sendResponse({ blockedWebsites });
+  } else if (message.action === "blockAds") {
+    blockAdsOnPage();
+  }
+});
 
-if (isExplicitWebsite(currentUrl)) {
-  blockWebsiteAccess();
-}
-
-function isExplicitWebsite(url) {
-  return explicitWebsites.some(explicitUrl => url.includes(explicitUrl));
-}
-
-function blockWebsiteAccess() {
-   window.location.href = "about:blank";
+function blockAdsOnPage() {
+  const adElements = document.querySelectorAll("img, iframe, script");
+    adElements.forEach((element) => {
+    const src = element.src;
+    if (src) {
+      const domain = new URL(src).host;
+      if (blockedAdDomains.includes(domain)) {
+        element.remove(); 
+      }
+    }
+  });
 }
