@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Vanadium",
   "version": "1.0",
-  "description": "extension that makes ur firefox secure blah blah blah",
+  "description": "extension",
   "permissions": ["activeTab", "<all_urls>"],
   "icons": {
     "48": "icon.png"
@@ -15,10 +15,10 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ],
+  },
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
+    "default_popup": "popup.js",
+   "default_icon": {
       "48": "icon.png"
     }
   }
